@@ -108,7 +108,7 @@ resource "azurerm_subnet_network_security_group_association" "dbnsglink" {
 }
 
 resource "azurerm_public_ip" "bastionIP" {
-  name                = "examplepip"
+  name                = "${var.purpose}_pubip"
   location            = azurerm_resource_group.prodrg.location
   resource_group_name = azurerm_resource_group.prodrg.name
   allocation_method   = "Static"
@@ -116,12 +116,12 @@ resource "azurerm_public_ip" "bastionIP" {
 }
 
 resource "azurerm_bastion_host" "example" {
-  name                = "examplebastion"
+  name                = "${var.purpose}_bastion"
   location            = azurerm_resource_group.prodrg.location
   resource_group_name = azurerm_resource_group.prodrg.name
 
   ip_configuration {
-    name                 = "configuration"
+    name                 = "bastionipconfig"
     subnet_id            = azurerm_subnet.AzureBastionSubnet.id
     public_ip_address_id = azurerm_public_ip.bastionIP.id
   }
